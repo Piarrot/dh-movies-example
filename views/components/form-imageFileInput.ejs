@@ -1,0 +1,25 @@
+<% 
+if (!data.classes){
+    data.classes = "";
+} 
+%>
+<div class="mb-3">
+    <label for="">
+        Current Image:
+    </label>
+    <div class="mb-2">
+        <% if (data.value) { %>
+        <img src="<%= `${data.fileDir}/${data.value}` %>" alt="" style="height: 150px;">
+        <% } else {%>
+        No image selected
+        <% } %>
+    </div>
+
+    <div class="custom-file <%= data.classes %>">
+        <input type="file" class="custom-file-input" id="<%= data.name %>" name="<%= data.name %>"
+            accept="image/png, image/jpeg">
+        <% if (data.label) { %>
+        <label class="custom-file-label" for="<%= data.name %>"><%= data.label %></label>
+        <% } %>
+    </div>
+</div>

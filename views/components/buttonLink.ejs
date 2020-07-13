@@ -1,0 +1,9 @@
+<% if (!data.classes){
+    data.classes = "btn-primary";
+} %>
+
+<a href="<%= data.link %>">
+    <button type="button" class="btn <%= data.classes %> my-3">
+        <%= data.label %>
+    </button>
+</a>

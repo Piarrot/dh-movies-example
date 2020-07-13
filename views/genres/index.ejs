@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% const title = "Genre Details" %>
+
+<head>
+    <%- include("../partials/head.ejs", {title}) %>
+</head>
+
+<body>
+    <%- include("../components/page-breadcrumb",{breadcrumbs:[{name:"Home",url:"/"}]}) %>
+    <div class="container mt-5">
+        <%- include("../components/page-title.ejs", {title}) %>
+        <%- include("../components/linkList.ejs", {entityList: genres, entityComponent: "../components/genreLink", emptyMessage: "No genres found" }) %>
+    </div>
+</body>
+
+</html>

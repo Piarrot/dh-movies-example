@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head.ejs",{title}) %>
+</head>
+
+<% 
+    let data; 
+    if(genre){
+        data = genre;
+        data.url = `/genres/${genre.id}?_method=PATCH`
+    }else{
+        data = {
+            name: "",
+            ranking: 0,
+            url: "/genres",
+        }
+    }
+%>
+
+<body>
+    <% 
+        const breadcrumbs = [
+            {name:"Home",url:"/"},
+            {name:"Genres",url:"/genres"}
+        ]
+        if (data.id){
+            breadcrumbs.push({name: (data.name), url:`/genres/${data.id}`})
+        }
+    %>
+    <%- include("../components/page-breadcrumb",{breadcrumbs}) %>
+    <div class="container mt-5">
+
+        <%- include("../components/page-title", {title: data.name }) %>
+
+        <form action="<%= data.url %>" method="POST">
+            <%- include("../components/form-input", { data:{label: "Name", name:"name", type:"text", value:data.name} }) %>
+
+            <%- include("../components/form-button", {data: {label: "Submit", type: "submit"}}) %>
+        </form>
+    </div>
+</body>
+
+</html>

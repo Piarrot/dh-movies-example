@@ -1,0 +1,5 @@
+<% let movie = entity %>
+
+<a href="/movies/<%= movie.id %>">
+    <%= movie.title %> (<%= moment(movie.releaseDate).format("YYYY") %>)
+</a>

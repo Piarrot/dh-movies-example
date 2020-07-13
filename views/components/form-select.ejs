@@ -1,0 +1,14 @@
+<% if (!data.classes){
+    data.classes = "";
+} %>
+
+<div class="form-group">
+    <% if (data.label) { %>
+    <label for="<%= data.name %>"><%= data.label %></label>
+    <% } %>
+    <select id="<%= data.name %>" name="<%= data.name %>" class="form-control <%= data.classes %>">
+        <% for( let option of data.options ) { %>
+        <option <%= option.id == data.value ? "selected" : "" %> value="<%= option.id %>"><%= option.label %></option>
+        <% } %>
+    </select>
+</div>

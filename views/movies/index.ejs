@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% const title = "Movies List" %>
+
+<head>
+    <%- include("../partials/head.ejs", {title}) %>
+</head>
+
+<body>
+    <%- include("../components/page-breadcrumb",{breadcrumbs:[{name:"Home",url:"/"}]}) %>
+    <div class="container mt-5">
+        <%- include("../components/page-title.ejs", {title}) %>
+
+        <div class="d-flex justify-content-end">
+            <%- include("../components/buttonLink", {data:{label: "New", link: "/movies/create"}}) %>
+        </div>
+
+        <%- include("../components/linkList.ejs", {entityList: movies, entityComponent: "../components/movieLink", emptyMessage: "No movies found" }) %>
+    </div>
+</body>
+
+</html>

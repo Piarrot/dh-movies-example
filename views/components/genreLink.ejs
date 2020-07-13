@@ -1,0 +1,5 @@
+<% let genre = entity %>
+
+<a href="/genres/<%= genre.id %>">
+    <%= genre.name %> (<%= genre.movies.length %>)
+</a>

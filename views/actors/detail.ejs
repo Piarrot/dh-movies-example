@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% const title = "Actor Details" %>
+
+<head>
+    <%- include("../partials/head.ejs",{title}) %>
+</head>
+
+<body>
+    <%- include("../components/page-breadcrumb",{breadcrumbs:[{name:"Home",url:"/"},{name:"Actors",url:"/actors"}]}) %>
+
+    <div class="container mt-5">
+
+        <%- include("../components/page-title", {title: getActorName(actor) }) %>
+
+        <div class="row">
+            <div style="height: 500px;">
+                <img style="height: 500px;" src="/images/actors/<%= actor.profilePic %>" alt="">
+            </div>
+
+            <div class="col">
+                <%- include("../components/page-subtitle", {title: "Movies"}) %>
+                <%- include("../components/linkList", {entityList: actor.movies, entityComponent: "../components/movieLink", emptyMessage: "No movies recorded" }) %>
+            </div>
+
+            <div class="col-2">
+                <%- include("../components/page-subtitle", {title: "Actions"}) %>
+                <%- include("../components/buttonLink", {data: {label: "Edit", classes:"btn-primary", link: `/actors/${actor.id}/edit`}}) %>
+                <%- include("../components/buttonForm", {title: "Delete", classes:"btn-danger", link: `/actors/${actor.id}`, method:"DELETE"}) %>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>

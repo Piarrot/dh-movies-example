@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head.ejs",{title}) %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script defer>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        })
+    </script>
+</head>
+
+<% 
+    let data; 
+    if(typeof actor != "undefined"){
+        data = actor;
+        data.url = `/actors/${actor.id}?_method=PATCH`
+    }else{
+        data = {
+            firstName: "",
+            lastName: "",
+            profilePic: "",
+            url: "/actors",
+        }
+    }
+%>
+
+<body>
+    <% 
+        const breadcrumbs = [
+            {name:"Home",url:"/"},
+            {name:"Actors",url:"/actors"}
+        ]
+        if (data.id){
+            breadcrumbs.push({name: (getActorName(data)), url:`/actors/${data.id}`})
+        }
+    %>
+    <%- include("../components/page-breadcrumb",{breadcrumbs}) %>
+    <div class="container mt-5">
+
+        <%- include("../components/page-title", {title: getActorName(data) || title }) %>
+
+        <form action="<%= data.url %>" method="POST" enctype="multipart/form-data">
+            <%- include("../components/form-input", { data:{label: "First Name", name:"firstName", type:"text", value:data.firstName} }) %>
+            <%- include("../components/form-input", { data:{label: "Last Name", name:"lastName", type:"text", value:data.lastName} }) %>
+            <%- include("../components/form-imageFileInput", {data:{label: "ProfilePic", name:"profilePic", value:data.profilePic, fileDir: "/images/actors" }}) %>
+
+            <%- include("../components/form-button", {data: {label: "Submit", type: "submit"}}) %>
+        </form>
+
+    </div>
+</body>

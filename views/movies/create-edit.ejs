@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/head.ejs",{title}) %>
+</head>
+
+<% 
+    let data; 
+    if(typeof movie != "undefined"){
+        data = movie;
+        if (!data.genre){
+            data.genre = {}
+        }
+        data.url = `/movies/${movie.id}?_method=PATCH`
+    }else{
+        data = {
+            title: "",
+            genreId: 1,
+            awards: 0,
+            revenue: 0,
+            releaseDate: Date.now(),
+            length: 0,
+            coverArt: "",
+            genre: {},
+            actors: [],
+            url: "/movies",
+        }
+    }
+%>
+
+<body>
+    <% 
+        const breadcrumbs = [
+            {name:"Home",url:"/"},
+            {name:"Genres",url:"/genres"}
+        ]
+        if (data.id){
+            breadcrumbs.push({name: (data.title), url:`/movies/${data.id}`})
+        }
+        %>
+    <%- include("../components/page-breadcrumb",{breadcrumbs}) %>
+    <div class="container mt-5">
+
+        <%- include("../components/page-title", {title: data.title || title }) %>
+
+        <form action="<%= data.url %>" method="POST">
+            <%- include("../components/form-input", { data:{label: "Title", name:"title", type:"text", value:data.title} }) %>
+            <%- include("../components/form-imageLink", {data:{label: "Cover Art", name:"coverArt", value:data.coverArt }}) %>
+            <%- include("../components/form-select", {data:{label: "Genre", name:"genreId", options:genres, value:data.genre.id }}) %>
+            <%- include("../components/form-input", {data: {label: "Awards", name:"awards", type:"number", value:data.awards }}) %>
+            <%- include("../components/form-input", {data: {label: "Revenue", name:"revenue", type:"text", value:data.revenue }}) %>
+            <%- include("../components/form-input", {data:{label: "ReleaseDate", name:"releaseDate", type:"date", value:data.releaseDate }}) %>
+            <%- include("../components/form-input", {data:{label: "Length", name:"length", type:"number", value:data.length} }) %>
+
+            <%- include("../components/form-button", {data: {label: "Submit", type: "submit"}}) %>
+        </form>
+        <% if (data.id) { //IF MOVIE IS BEING EDITED%>
+        <%- include("../components/page-subtitle", {title: "Actors"}) %>
+        <div class="row">
+            <div class="col-3">Actor</div>
+            <div class="col-4">Screen Time</div>
+            <div class="col-2">Actions</div>
+        </div>
+        <% for (const actor of data.actors) { %>
+        <div class="row mt-1">
+            <div class="col-3">
+                <%= `${actor.firstName} ${actor.lastName}` %>
+            </div>
+            <div class="col-4">
+                <form class="form-inline" action="/movies/<%= movie.id %>/actor/<%= actor.id %>?_method=PATCH"
+                    method="POST">
+                    <%- include("../components/form-input", {data: {name:"screentime", type:"number", value:actor.ActorMovie.screentime }}) %>
+                    <%- include("../components/form-button", {data: {label: "Save", type: "submit"}}) %>
+                </form>
+            </div>
+            <div class="col-2">
+                <%- include("../components/buttonForm", {title: "Remove", classes:"btn-danger", link: `/movies/${movie.id}/actor/${actor.id}`, method:"DELETE"}) %>
+            </div>
+        </div>
+        <% } %>
+
+        <form action="/movies/<%= data.id %>/actor" method="POST">
+            <div class="row mt-3">
+                <div class="col-3">
+                    <%- include("../components/form-select", {data:{name:"actorId", options:availableActors }}) %>
+                </div>
+                <div class="col-4">
+                    <%- include("../components/form-input", {data: {name:"screentime", type:"number"}}) %>
+                </div>
+                <div class="col-2">
+                    <%- include("../components/form-button", {data: {label: "Add Actor", type: "submit"}}) %>
+                </div>
+            </div>
+        </form>
+        <% } %>
+
+    </div>
+</body>

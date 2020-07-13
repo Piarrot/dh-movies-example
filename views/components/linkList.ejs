@@ -1,0 +1,11 @@
+<% if (entityList.length === 0) { %>
+<p><%= emptyMessage %> </p>
+<%} else { %>
+<ul>
+    <% for( const entity of entityList) { %>
+    <li>
+        <%- include(entityComponent, {entity}) %>
+    </li>
+    <% } %>
+</ul>
+<% } %>

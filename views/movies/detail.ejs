@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% const title = "Movie Details" %>
+
+<head>
+    <%- include("../partials/head.ejs",{title}) %>
+</head>
+
+<body>
+    <%- include("../components/page-breadcrumb",{breadcrumbs:[{name:"Home",url:"/"},{name:"Movies",url:"/movies"}]}) %>
+
+    <div class="container mt-5">
+
+        <%- include("../components/page-title", {title: movie.title }) %>
+
+        <div class="row">
+            <div style="height: 500px;">
+                <img style="height: 500px;" src="<%= movie.coverArt %>" alt="">
+            </div>
+
+            <div class="col">
+                <%- include("../components/detailLabel", {labelName:"Genre",labelText: include("../components/genreLink", {entity: movie.genre}) }) %>
+                <%- include("../components/detailLabel", {labelName:"Awards",labelText: movie.awards }) %>
+                <%- include("../components/detailLabel", {labelName:"Revenue",labelText: movie.revenue || "N/A" }) %>
+                <%- include("../components/detailLabel", {labelName:"Release Date",labelText: moment(movie.releaseDate).format("LL") }) %>
+                <%- include("../components/detailLabel", {labelName:"Length",labelText: moment.duration(movie.length, 'minutes').humanize() }) %>
+
+                <%- include("../components/page-subtitle", {title: "Actors"}) %>
+                <%- include("../components/linkList", {entityList: movie.actors, entityComponent: "../components/actorLink", emptyMessage: "No actors recorded" }) %>
+            </div>
+
+            <div class="col-2">
+                <%- include("../components/page-subtitle", {title: "Actions"}) %>
+                <%- include("../components/buttonLink", {data: {label: "Edit", classes:"btn-primary", link: `/movies/${movie.id}/edit`}}) %>
+                <%- include("../components/buttonForm", {title: "Delete", classes:"btn-danger", link: `/movies/${movie.id}`, method:"DELETE"}) %>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>

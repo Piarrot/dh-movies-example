@@ -1,0 +1,8 @@
+<% if (!data.classes){
+    data.classes = "";
+} %>
+
+<div class="form-group <%= data.classes %>">
+    <label for="name"><%= data.label %></label>
+    <input type="text" class="form-control" id="<%= data.name %>" name="<%= data.name %>" value="<%= data.value %>">
+</div>

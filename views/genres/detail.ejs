@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% const title = "Genre Details" %>
+
+<head>
+    <%- include("../partials/head.ejs", {title}) %>
+</head>
+
+<body>
+    <%- include("../components/page-breadcrumb",{breadcrumbs:[{name:"Home",url:"/"},{name:"Genres",url:"/genres"}]}) %>
+    <div class="container mt-5">
+        <%- include("../components/page-title.ejs", {title}) %>
+        <div class="row">
+            <div class="col">
+                <%- include("../components/detailLabel.ejs", {labelName:"Name",labelText: genre.name }) %>
+                <%- include("../components/detailLabel.ejs", {labelName:"Ranking",labelText: genre.ranking }) %>
+
+                <%- include("../components/page-subtitle.ejs", {title: "Movies"}) %>
+                <%- include("../components/linkList.ejs", {entityList: genre.movies, entityComponent: "../components/movieLink", emptyMessage: "No movies recorded" }) %>
+            </div>
+            <div class="col-2">
+                <%- include("../components/page-subtitle", {title: "Actions"}) %>
+                <%- include("../components/buttonLink", {data:{label: "Edit", classes:"btn-primary", link: `/genres/${genre.id}/edit`}}) %>
+                <%- include("../components/buttonForm", {title: "Delete", classes:"btn-danger", link: `/genres/${genre.id}`, method:"DELETE"}) %>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
