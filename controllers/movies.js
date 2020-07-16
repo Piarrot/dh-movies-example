@@ -1,6 +1,8 @@
 const { Movie, Genre, Actor, Sequelize } = require("../database/models");
 const Op = Sequelize.Op;
 
+//Mapea la lista para que sea simple de mostrar el select
+//Ver "/views/components/form-select.ejs"
 async function mapGenresToSelectOptions() {
     const genres = await Genre.findAll();
     return genres.map((genre) => {
@@ -8,6 +10,8 @@ async function mapGenresToSelectOptions() {
     });
 }
 
+//Mapea la lista para que sea simple de mostrar el select
+//Ver "/views/components/form-select.ejs"
 async function getAvailableActorsAndMapToSelectOptions(movie) {
     const movieActorsIds = movie.actors.map((actor) => {
         return actor.id;
@@ -108,7 +112,6 @@ module.exports = {
     updateActor: async (req, res) => {
         const movie = await Movie.findByPk(req.params.id);
         const actor = await Actor.findByPk(req.params.actorId);
-        console.log(req.body.screentime);
         await movie.addActor(actor, {
             through: {
                 screentime: req.body.screentime,
