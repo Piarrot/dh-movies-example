@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             coverArt: DataTypes.STRING,
         },
         {
-            tableName: "movie",
+            tableName: "movies",
         }
     );
     Movie.associate = function (models) {

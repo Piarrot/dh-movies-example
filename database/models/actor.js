@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             profilePic: DataTypes.STRING,
         },
         {
-            tableName: "actor",
+            tableName: "actors",
         }
     );
     Actor.associate = function (models) {
