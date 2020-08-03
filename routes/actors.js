@@ -27,10 +27,11 @@ const upload = multer({
 });
 
 router.get("/", actorsController.index);
+router.get("/create", actorsController.showCreate);
 router.get("/:id", actorsController.detail);
 router.patch("/:id", upload.single("profilePic"), actorsController.update);
 router.get("/:id/edit", actorsController.showEdit);
-router.get("/create", actorsController.showCreate);
 router.post("/", upload.single("profilePic"), actorsController.create);
+router.delete("/:id", actorsController.delete);
 
 module.exports = router;
