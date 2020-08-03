@@ -7,8 +7,6 @@ const s3 = new S3({
     secretAccessKey: process.env.AWS_SECRET,
 });
 
-console.log(process.env.AWS_BUCKET);
-
 const bucketInfo = {
     Bucket: process.env.AWS_BUCKET,
 };
@@ -17,7 +15,7 @@ function deleteFromBucket(objectId) {
     return new Promise((resolve, reject) => {
         s3.deleteObject(
             {
-                Bucket: process.env.AWS_BUCKET,
+                ...bucketInfo,
                 Key: objectId,
             },
             (err, data) => {
@@ -32,7 +30,7 @@ function uploadToBucket(file) {
     return new Promise((resolve, reject) => {
         s3.upload(
             {
-                Bucket: process.env.AWS_BUCKET,
+                ...bucketInfo,
                 Key: uuid(),
                 Body: file.buffer,
                 ACL: "public-read",
@@ -45,33 +43,26 @@ function uploadToBucket(file) {
         );
     });
 }
+const actorService = require("../services/actorService");
 
 module.exports = {
     index: async (req, res) => {
-        const actors = await Actor.findAll({
-            include: ["movies"],
-        });
+        const actors = await actorService.findAll();
 
         res.render("actors/index", { actors });
     },
     detail: async (req, res) => {
-        const actor = await Actor.findByPk(req.params.id, {
-            include: ["movies"],
-        });
+        const actor = await actorService.findOne(req.params.id);
 
         res.render("actors/detail", { actor });
     },
     showEdit: async (req, res) => {
-        const actor = await Actor.findByPk(req.params.id, {
-            include: ["movies"],
-        });
+        const actor = await actorService.findOne(req.params.id);
 
         res.render("actors/create-edit", { actor, title: "Edit Actor" });
     },
     update: async (req, res) => {
-        const actor = await Actor.findByPk(req.params.id, {
-            include: ["movies"],
-        });
+        const actor = await actorService.findOne(req.params.id);
 
         let imageId = null;
         if (req.file) {
@@ -83,13 +74,13 @@ module.exports = {
 
         await actor.update({
             ...req.body,
-            profilePic: imageId,
+            profilePic: "/images/actors/" + req.file.filename,
         });
 
         res.redirect("back");
     },
     showCreate: async (req, res) => {
-        res.render("actors/create-edit", {});
+        res.render("actors/create-edit", { title: "Create Actor" });
     },
     create: async (req, res) => {
         let imageId = await uploadToBucket(req.file);
@@ -99,5 +90,13 @@ module.exports = {
             profilePic: imageId,
         });
         res.redirect(`/actors/${actor.id}`);
+    },
+    delete: async (req, res) => {
+        await Actor.destroy({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.redirect("/actors");
     },
 };

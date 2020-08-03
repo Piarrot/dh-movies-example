@@ -1,10 +1,9 @@
 const { Movie, Genre, Actor, ActorMovie } = require("../../database/models");
+const actorService = require("../../services/actorService");
 
 module.exports = {
     index: async (req, res) => {
-        const actors = await Actor.findAll({
-            include: ["movies"],
-        });
+        const actors = await actorService.findAll();
 
         const plainActors = actors.map((actor) => {
             return {
@@ -19,9 +18,7 @@ module.exports = {
     },
 
     detail: async (req, res) => {
-        const actor = await Actor.findByPk(req.params.id, {
-            include: ["movies"],
-        });
+        const actor = await actorService.findOne(req.params.id);
 
         const plainActor = {
             id: actor.id,
@@ -31,8 +28,5 @@ module.exports = {
         };
 
         res.send(plainActor);
-    },
-    test: (req, res) => {
-        res.send(req.body);
     },
 };

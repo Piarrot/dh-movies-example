@@ -21,10 +21,11 @@ const processProfilePic = multer({
 }).single("profilePic");
 
 router.get("/", actorsController.index);
+router.get("/create", actorsController.showCreate);
 router.get("/:id", actorsController.detail);
 router.patch("/:id", processProfilePic, actorsController.update);
 router.get("/:id/edit", actorsController.showEdit);
-router.get("/create", actorsController.showCreate);
 router.post("/", processProfilePic, actorsController.create);
+router.delete("/:id", actorsController.delete);
 
 module.exports = router;
