@@ -64,17 +64,22 @@ module.exports = {
     update: async (req, res) => {
         const actor = await actorService.findOne(req.params.id);
 
-        let imageId = null;
+        let imageUrl = null;
+        // if (req.file) {
+        //     if (actor.profilePic) {
+        //         deleteFromBucket(actor.profilePic);
+        //     }
+        //     imageId = await uploadToBucket(req.file);
+        // }
         if (req.file) {
-            if (actor.profilePic) {
-                deleteFromBucket(actor.profilePic);
-            }
-            imageId = await uploadToBucket(req.file);
+            imageUrl = "/images/actors/" + req.file.filename;
+        } else {
+            imageUrl = actor.profilePic;
         }
 
         await actor.update({
             ...req.body,
-            profilePic: "/images/actors/" + req.file.filename,
+            profilePic: imageUrl,
         });
 
         res.redirect("back");
@@ -83,11 +88,12 @@ module.exports = {
         res.render("actors/create-edit", { title: "Create Actor" });
     },
     create: async (req, res) => {
-        let imageId = await uploadToBucket(req.file);
+        // let imageUrl = await uploadToBucket(req.file);
+        let imageUrl = "/images/actors/" + req.file.filename;
 
         const actor = await Actor.create({
             ...req.body,
-            profilePic: imageId,
+            profilePic: imageUrl,
         });
         res.redirect(`/actors/${actor.id}`);
     },
