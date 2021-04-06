@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
             length: DataTypes.INTEGER(10).UNSIGNED,
             coverArt: DataTypes.STRING,
         },
-        {}
+        {
+            tableName: "movies",
+        }
     );
     Movie.associate = function (models) {
         Movie.belongsTo(models.Genre, {

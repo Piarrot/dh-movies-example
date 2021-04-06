@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
         {
             name: DataTypes.STRING,
         },
-        {}
+        {
+            tableName: "genres",
+        }
     );
     Genre.associate = function (models) {
         Genre.hasMany(models.Movie, { as: "movies" });

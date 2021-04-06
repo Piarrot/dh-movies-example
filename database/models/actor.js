@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
             rating: DataTypes.FLOAT(3, 1),
             profilePic: DataTypes.STRING,
         },
-        {}
+        {
+            tableName: "actors",
+        }
     );
     Actor.associate = function (models) {
         Actor.belongsTo(models.Movie, {
